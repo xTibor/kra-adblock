@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=Krita/PythonPlugin
+X-KDE-Library=kra_adblock
+X-Python-2-Compatible=false
+Name=kra_adblock
+Comment=Ad blocker for Krita
