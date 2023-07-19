@@ -1,28 +1,34 @@
 from krita import *
+import re
 
-widgetBlockList = [
-    # Krita 5.1.5
-    (QLabel,            'gettingStartedLink'),
-    (QLabel,            'helpTitleLabel'    ),
-    (QLabel,            'kritaWebsiteLink'  ),
-    (QLabel,            'labelSupportText'  ),
-    (QLabel,            'manualLink'        ),
-    (QLabel,            'poweredByKDELink'  ),
-    (QLabel,            'sourceCodeLink'    ),
-    (QLabel,            'supportKritaLink'  ),
-    (QLabel,            'userCommunityLink' ),
-    (QPushButton,       'gettingStartedIcon'),
-    (QPushButton,       'kdeIcon'           ),
-    (QPushButton,       'kritaWebsiteIcon'  ),
-    (QPushButton,       'sourceCodeIcon'    ),
-    (QPushButton,       'supportKritaIcon'  ),
-    (QPushButton,       'userCommunityIcon' ),
-    (QPushButton,       'userManualIcon'    ),
-    (QWidget,           'widgetRight'       ),
-    # Krita 5.2.x
-    # https://invent.kde.org/graphics/krita/-/merge_requests/1853
-    #(KisClickableLabel, 'lblBanner'         ),
-]
+widgetBlockList = {
+    '5.1': [
+        (QLabel,            'gettingStartedLink'),
+        (QLabel,            'helpTitleLabel'    ),
+        (QLabel,            'kritaWebsiteLink'  ),
+        (QLabel,            'labelSupportText'  ),
+        (QLabel,            'manualLink'        ),
+        (QLabel,            'poweredByKDELink'  ),
+        (QLabel,            'sourceCodeLink'    ),
+        (QLabel,            'supportKritaLink'  ),
+        (QLabel,            'userCommunityLink' ),
+        (QPushButton,       'gettingStartedIcon'),
+        (QPushButton,       'kdeIcon'           ),
+        (QPushButton,       'kritaWebsiteIcon'  ),
+        (QPushButton,       'sourceCodeIcon'    ),
+        (QPushButton,       'supportKritaIcon'  ),
+        (QPushButton,       'userCommunityIcon' ),
+        (QPushButton,       'userManualIcon'    ),
+        (QWidget,           'widgetRight'       ),
+    ],
+    '5.2': [
+        # https://invent.kde.org/graphics/krita/-/merge_requests/1853
+        (QLabel,            'labelSupportText'  ),
+        (QLabel,            'lblBanner'         ),
+        (QWidget,           'widgetCenter'      ),
+        (QWidget,           'widgetRight'       ),
+    ],
+}
 
 class KraAdblock(Extension):
     def __init__(self, parent):
@@ -39,7 +45,10 @@ class KraAdblock(Extension):
         pass
 
     def blockAdsAllWindows(self):
+        versionFull = Krita.instance().version()
+        versionMajMin = re.search(r'(\d+\.\d+)\..*', versionFull).group(1)
+
         for window in Krita.instance().windows():
-            for widgetType, widgetName in widgetBlockList:
+            for widgetType, widgetName in widgetBlockList[versionMajMin]:
                 if widget := window.qwindow().findChild(widgetType, widgetName):
                     widget.setVisible(False)
