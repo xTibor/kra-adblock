@@ -35,6 +35,12 @@ class KraAdblock(Extension):
         super().__init__(parent)
 
     def setup(self):
+        self.blockListVersion = re.search(r'(\d+\.\d+)\..*', Krita.instance().version()).group(1)
+
+        if not self.blockListVersion in widgetBlockList:
+            print("kra-adblock: Unsupported Krita version")
+            return
+
         appNotifier = Krita.instance().notifier()
         appNotifier.windowCreated.connect(self.blockAdsAllWindows)
         appNotifier.setActive(True)
@@ -45,10 +51,7 @@ class KraAdblock(Extension):
         pass
 
     def blockAdsAllWindows(self):
-        versionFull = Krita.instance().version()
-        versionMajMin = re.search(r'(\d+\.\d+)\..*', versionFull).group(1)
-
         for window in Krita.instance().windows():
-            for widgetType, widgetName in widgetBlockList[versionMajMin]:
+            for widgetType, widgetName in widgetBlockList[self.blockListVersion]:
                 if widget := window.qwindow().findChild(widgetType, widgetName):
                     widget.setVisible(False)
