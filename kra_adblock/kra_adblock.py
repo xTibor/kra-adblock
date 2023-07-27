@@ -3,6 +3,7 @@ import re
 
 widgetBlockList = {
     '5.1': [
+        # Tested with: Krita 5.1.5
         (QLabel,            'gettingStartedLink' ),
         (QLabel,            'helpTitleLabel'     ),
         (QLabel,            'kritaWebsiteLink'   ),
@@ -22,6 +23,7 @@ widgetBlockList = {
         (QWidget,           'widgetRight'        ),
     ],
     '5.2': [
+        # Tested with: Krita 5.2.0 beta1
         # https://invent.kde.org/graphics/krita/-/merge_requests/1853
         (QLabel,            'labelSupportText'   ),
         (QLabel,            'lblBanner'          ),
@@ -29,6 +31,7 @@ widgetBlockList = {
         (QWidget,           'widgetRight'        ),
     ],
     '5.3': [
+        # Tested with: Krita 5.3.0 prealpha
         (QLabel,            'gettingStartedLink' ),
         (QLabel,            'helpTitleLabel'     ),
         (QLabel,            'kritaWebsiteLink'   ),
